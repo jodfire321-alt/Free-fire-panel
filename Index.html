@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Fire Rewards Panel</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #090909;
+    color: white;
+}
+
+header {
+    background: linear-gradient(90deg, #ff4500, #ff8c00);
+    padding: 18px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 25px;
+}
+
+.hero {
+    text-align: center;
+    padding: 45px 20px;
+    background: linear-gradient(rgba(0,0,0,.65), rgba(0,0,0,.85));
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: #ff7300;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #ddd;
+}
+
+.card {
+    background: #151515;
+    border: 1px solid #292929;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.4);
+}
+
+.card h2 {
+    color: #ff7300;
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    background: #252525;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #ff4500, #ff8c00);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .85;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat {
+    background: #202020;
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    color: #ff7300;
+}
+
+.leaderboard div {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px;
+    margin: 7px 0;
+    background: #222;
+    border-radius: 8px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #888;
+}
+
+@media(max-width:600px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🔥 FREE FIRE REWARDS PANEL
+</header>
+
+<div class="container">
+
+<section class="hero">
+    <h1>FF Fan Rewards</h1>
+    <p>Register, collect points and compete on the leaderboard.</p>
+</section>
+
+<div class="card">
+    <h2>📝 Register</h2>
+
+    <input type="text" id="name" placeholder="Enter your name">
+    <input type="text" id="uid" placeholder="Enter your Game UID">
+
+    <button onclick="registerUser()">Register & Get 100 Points</button>
+
+    <p id="message" style="margin-top:15px;color:#00ff88;"></p>
+</div>
+
+<div class="card">
+    <h2>📊 Your Dashboard</h2>
+
+    <div class="stats">
+        <div class="stat">
+            <strong id="points">0</strong>
+            Points
+        </div>
+
+        <div class="stat">
+            <strong id="level">1</strong>
+            Level
+        </div>
+
+        <div class="stat">
+            <strong id="rank">--</strong>
+            Rank
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🏆 Leaderboard</h2>
+
+    <div class="leaderboard">
+        <div>
+            <span>🥇 Shadow</span>
+            <b>2500</b>
+        </div>
+
+        <div>
+            <span>🥈 Hunter</span>
+            <b>2100</b>
+        </div>
+
+        <div>
+            <span>🥉 RDX King</span>
+            <b>1800</b>
+        </div>
+
+        <div>
+            <span>🔥 Pro Player</span>
+            <b>1500</b>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎁 Rewards</h2>
+    <p style="color:#ccc;margin-bottom:10px;">
+        Points shown here are demo points for your website.
+    </p>
+
+    <button onclick="claimReward()">Claim Demo Reward</button>
+
+    <p id="rewardMessage" style="margin-top:15px;color:#00ff88;"></p>
+</div>
+
+</div>
+
+<footer>
+    © 2026 FF Fan Rewards • Fan-made website
+</footer>
+
+<script>
+
+let points = localStorage.getItem("points") || 0;
+
+document.getElementById("points").innerText = points;
+
+function registerUser() {
+
+    let name = document.getElementById("name").value;
+    let uid = document.getElementById("uid").value;
+
+    if(name === "" || uid === "") {
+        document.getElementById("message").style.color = "#ff4444";
+        document.getElementById("message").innerText =
+        "Please enter your name and UID.";
+        return;
+    }
+
+    points = Number(points) + 100;
+
+    localStorage.setItem("points", points);
+
+    document.getElementById("points").innerText = points;
+
+    document.getElementById("message").style.color = "#00ff88";
+    document.getElementById("message").innerText =
+    "Registration successful! You received 100 demo points.";
+
+    document.getElementById("name").value = "";
+    document.getElementById("uid").value = "";
+}
+
+function claimReward() {
+
+    if(points >= 500) {
+
+        points = Number(points) - 500;
+
+        localStorage.setItem("points", points);
+
+        document.getElementById("points").innerText = points;
+
+        document.getElementById("rewardMessage").innerText =
+        "🎁 Demo reward claimed successfully!";
+
+    } else {
+
+        document.getElementById("rewardMessage").style.color = "#ff4444";
+
+        document.getElementById("rewardMessage").innerText =
+        "You need 500 demo points to claim this reward.";
+    }
+}
+
+</script>
+
+</body>
+</html>
